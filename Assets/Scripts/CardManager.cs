@@ -130,10 +130,10 @@ public class CardManager : MonoBehaviour
         }
         if(turns%2==0)
         {
-            highlightBtn.active = false;
+            highlightBtn.SetActive(false);
         } else
         {
-            highlightBtn.active = true;
+            highlightBtn.SetActive(true);
         }
 
         if(Input.GetKeyDown(KeyCode.Space))
@@ -171,7 +171,7 @@ public class CardManager : MonoBehaviour
                 if(turns == 1)
                 {
                     Debug.Log("Blue wins!");
-                } else if(turns ==3)
+                } else if(turns == 3)
                 {
                     Debug.Log("Red wins!");
                 } else
