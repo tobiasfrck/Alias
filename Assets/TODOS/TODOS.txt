@@ -1,0 +1,11 @@
+- create card design
+- create card unity componnent
+- create ganme board design
+- create board unity componnent
+
+- mouse click event/arrow keys to select card
+- team change with
+
+- raten: welcher Begriff und wie viele passende Begriffe
+- Historie der Begriffe anzeigen
+- Standardwortlisten (hardcoden) bzw custom Wortlisten (laden)
