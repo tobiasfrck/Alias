@@ -45,6 +45,7 @@ public class CardScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        view = (mngr.turns)%2;
         if(view == 0)
         {
             btn.interactable = false;
@@ -61,10 +62,9 @@ public class CardScript : MonoBehaviour
             btn.interactable = true;
         }
     }
-    void click()
+    public void click()
     {
         revealed = true;
-        //TODO: Communicate revealed status
         mngr.registerPoint(teamID);
     }
 }

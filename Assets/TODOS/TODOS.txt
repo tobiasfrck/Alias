@@ -1,9 +1,9 @@
 - create card design
-- create card unity componnent
++ create card unity componnent
 - create ganme board design
-- create board unity componnent
++ create board unity componnent
 
-- mouse click event/arrow keys to select card
+/ mouse click event/arrow keys to select card
 - team change with
 
 - raten: welcher Begriff und wie viele passende Begriffe
