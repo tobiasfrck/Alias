@@ -6,6 +6,8 @@ DONE
 
 
 TODO:
+- Wordlist aufräumen
+- ADD README
 - Historie der Begriffe anzeigen
 / Standardwortlisten (hardcoden) bzw custom Wortlisten (laden)
 
