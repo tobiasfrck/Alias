@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,6 +25,8 @@ public class CardManager : MonoBehaviour
 
     [SerializeField]
     GameObject inputField;
+    [SerializeField]
+    GameObject inputFieldCount;
 
     [SerializeField]
     GameObject highlightBtn;
@@ -44,8 +47,43 @@ public class CardManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log(Application.streamingAssetsPath);
         // load words
         words = new ArrayList();
+        string wordListFile = Application.streamingAssetsPath + "\\wordlists\\List1.txt";
+        if (File.Exists(wordListFile))
+        {
+            string[] lines = System.IO.File.ReadAllLines(wordListFile);
+            if(lines.Length>=25)
+            {
+                for (int i = 0; i < 25; i++)
+                {
+                    string selectedWord = lines[Random.Range(0, lines.Length)];
+                    while (words.Contains(selectedWord))
+                    {
+                        selectedWord = lines[Random.Range(0, lines.Length)];
+                    }
+                    words.Add(selectedWord);
+                    Debug.Log("Added: \"" + selectedWord + "\" to words.");
+                }
+            } else
+            {
+                Debug.Log("Wordlist not found!");
+                for (int i = 0; i < 25; i++)
+                {
+                    words.Add("Hello");
+                }
+            }
+            
+        }
+        else
+        {
+            Debug.Log("Wordlist not found!");
+            for (int i = 0; i < 25; i++)
+            {
+                words.Add("Hello");
+            }
+        }
 
         ArrayList cards = new ArrayList();
         ArrayList redCards = new ArrayList();
@@ -84,6 +122,7 @@ public class CardManager : MonoBehaviour
                 btnArray[(i * 5) + j] = Instantiate(card, new Vector3(0, 0, 0), Quaternion.identity, this.transform.parent);
                 btnArray[(i * 5) + j].GetComponent<RectTransform>().anchoredPosition = new Vector3(i * btnRectTransform.rect.width - 356 + (i * 5), j * btnRectTransform.rect.height - 175 + (j * 5), 0);
                 btnArray[(i * 5) + j].name = "(" + i + "," + j + ")";
+                btnArray[(i * 5) + j].GetComponentInChildren<Text>().text = (string)words[(i * 5) + j];
                 if (redCards.Contains((i * 5) + j))
                 {
                     btnArray[(i * 5) + j].GetComponent<CardScript>().teamID = 1;
@@ -161,9 +200,9 @@ public class CardManager : MonoBehaviour
     {
         if (turns % 2 == 0)
         {
-            bool isIn = inputField.GetComponent<InputField>().text.Trim().Equals("");
+            bool isIn = inputField.GetComponent<InputField>().text.Trim().Equals("") || inputField.GetComponent<InputField>().text.Trim().Contains(" ") || inputFieldCount.GetComponent<InputField>().text.Trim().Equals("") || !int.TryParse(inputFieldCount.GetComponent<InputField>().text.Trim(), out _);
 
-            foreach(string word in words)
+            foreach (string word in words)
             {
                 if (isIn || inputField.GetComponent<InputField>().text.Trim().Equals(word))
                 {
@@ -171,11 +210,14 @@ public class CardManager : MonoBehaviour
                     break;
                 }
             }
-            if(!isIn)
+
+            if (!isIn)
             {
-                hintText.GetComponent<Text>().text = "Hint: " + inputField.GetComponent<InputField>().text;
-                Debug.Log("Hint: " + inputField.GetComponent<InputField>().text);
+                hintText.GetComponent<Text>().text = "Hint: " + inputField.GetComponent<InputField>().text + " [" + inputFieldCount.GetComponent<InputField>().text + "x]";
+
+                Debug.Log("Hint: " + inputField.GetComponent<InputField>().text + "; " + inputFieldCount.GetComponent<InputField>().text);
                 inputField.GetComponent<InputField>().text = "";
+                inputFieldCount.GetComponent<InputField>().text = "";
                 nextTurn();
             }
         }
@@ -208,6 +250,7 @@ public class CardManager : MonoBehaviour
         {
             highlightBtn.SetActive(false);
             inputField.SetActive(true);
+            inputFieldCount.SetActive(true);
             hintText.SetActive(false);
             btnNext.GetComponentInChildren<Text>().text = "Submit";
         }
@@ -215,6 +258,7 @@ public class CardManager : MonoBehaviour
         {
             highlightBtn.SetActive(true);
             inputField.SetActive(false);
+            inputFieldCount.SetActive(false);
             hintText.SetActive(true);
             highlightBtn.GetComponent<Button>().Select();
             btnNext.GetComponentInChildren<Text>().text = "Next";

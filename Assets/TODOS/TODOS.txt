@@ -1,11 +1,19 @@
-- create card design
+DONE
 + create card unity componnent
-- create ganme board design
 + create board unity componnent
++ mouse click event/arrow keys to select card
++ raten: welcher Begriff und wie viele passende Begriffe
 
-/ mouse click event/arrow keys to select card
-- team change with
 
-- raten: welcher Begriff und wie viele passende Begriffe
+TODO:
 - Historie der Begriffe anzeigen
-- Standardwortlisten (hardcoden) bzw custom Wortlisten (laden)
+/ Standardwortlisten (hardcoden) bzw custom Wortlisten (laden)
+
+- create ganme board design
+- create card design
+
+- delay zwischen Spielertypen
+- End-Screen
+- Startmenü
+	-> Wortlisten laden
+- restart Möglichkeit
