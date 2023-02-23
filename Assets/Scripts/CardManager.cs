@@ -16,9 +16,14 @@ public class CardManager : MonoBehaviour
     GameObject blueScoreText;
     [SerializeField]
     GameObject turnsText;
+    [SerializeField]
+    GameObject hintText;
 
     [SerializeField]
     GameObject btnNext;
+
+    [SerializeField]
+    GameObject inputField;
 
     [SerializeField]
     GameObject highlightBtn;
@@ -32,11 +37,16 @@ public class CardManager : MonoBehaviour
 
     public int turns = 0; //Spymaster red; team red; Spymaster blue; team blue
 
+    ArrayList words;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
+        // load words
+        words = new ArrayList();
+
         ArrayList cards = new ArrayList();
         ArrayList redCards = new ArrayList();
         ArrayList blueCards = new ArrayList();
@@ -88,7 +98,8 @@ public class CardManager : MonoBehaviour
                 }
             }
         }
-        btnNext.GetComponent<Button>().onClick.AddListener(nextTurn);
+        btnNext.GetComponent<Button>().onClick.AddListener(nextSubmit);
+        hintText.SetActive(false);
         Debug.Log("Inst");
     }
 
@@ -119,7 +130,7 @@ public class CardManager : MonoBehaviour
 
     void keyCheck()
     {
-        
+
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             highlightPos.y++;
@@ -146,6 +157,34 @@ public class CardManager : MonoBehaviour
             nextTurn();
         }
     }
+    void nextSubmit()
+    {
+        if (turns % 2 == 0)
+        {
+            bool isIn = inputField.GetComponent<InputField>().text.Trim().Equals("");
+
+            foreach(string word in words)
+            {
+                if (isIn || inputField.GetComponent<InputField>().text.Trim().Equals(word))
+                {
+                    isIn = true;
+                    break;
+                }
+            }
+            if(!isIn)
+            {
+                hintText.GetComponent<Text>().text = "Hint: " + inputField.GetComponent<InputField>().text;
+                Debug.Log("Hint: " + inputField.GetComponent<InputField>().text);
+                inputField.GetComponent<InputField>().text = "";
+                nextTurn();
+            }
+        }
+        else
+        {
+            nextTurn();
+        }
+    }
+
     void nextTurn()
     {
         turns++;
@@ -154,13 +193,13 @@ public class CardManager : MonoBehaviour
         {
             case 0:
                 turnsText.GetComponent<Text>().text = "Red Spymaster";
-                break; 
+                break;
             case 1:
                 turnsText.GetComponent<Text>().text = "Red Team";
-                break; 
+                break;
             case 2:
                 turnsText.GetComponent<Text>().text = "Blue Spymaster";
-                break; 
+                break;
             case 3:
                 turnsText.GetComponent<Text>().text = "Blue Team";
                 break;
@@ -168,11 +207,17 @@ public class CardManager : MonoBehaviour
         if (turns % 2 == 0)
         {
             highlightBtn.SetActive(false);
+            inputField.SetActive(true);
+            hintText.SetActive(false);
+            btnNext.GetComponentInChildren<Text>().text = "Submit";
         }
         else
         {
             highlightBtn.SetActive(true);
+            inputField.SetActive(false);
+            hintText.SetActive(true);
             highlightBtn.GetComponent<Button>().Select();
+            btnNext.GetComponentInChildren<Text>().text = "Next";
         }
     }
 
