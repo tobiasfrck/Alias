@@ -45,26 +45,32 @@ public class CardScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        view = (mngr.turns)%2;
-        if(view == 0)
+        view = (mngr.turns) % 2;
+        if (view == 0)
         {
             btn.interactable = false;
             displayColor();
-        } else
+        }
+        else
         {
             img.color = Color.white;
         }
-        if(revealed==true)
+        if (revealed == true)
         {
             displayColor();
             btn.interactable = false;
-        } else { 
+        }
+        else
+        {
             btn.interactable = true;
         }
     }
     public void click()
     {
-        revealed = true;
-        mngr.registerPoint(teamID);
+        if (!revealed && mngr.turns%2==1)
+        {
+            revealed = true;
+            mngr.registerPoint(teamID);
+        }
     }
 }
